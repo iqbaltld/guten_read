@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:guten_read/features/book_analyzer/presentation/cubit/book_analyzer_cubit.dart';
 import 'core/routes/app_router.dart';
-import 'core/services/navigation_service.dart';
-import 'features/product/presentation/cubit/product_list_cubit.dart';
 import 'injection_container.dart';
 
 class MyApp extends StatelessWidget {
@@ -14,21 +13,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(428, 926), // Mobile-focused design
       builder: (context, child) {
         return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) => sl<ProductListCubit>(),
-            ),
-          ],
+          providers: [BlocProvider(create: (_) => sl<BookAnalyzerCubit>())],
           child: Builder(
             builder: (context) {
-              final navigationService = sl<NavigationService>();
               return MaterialApp(
-                title: 'Products App',
-                navigatorKey: navigationService.navigatorKey,
-                navigatorObservers: [navigationService],
+                title: 'Gutenberg Character Analyzer',
+
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
                   primarySwatch: Colors.blue,
@@ -37,6 +30,12 @@ class MyApp extends StatelessWidget {
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
                     elevation: 0,
+                  ),
+                  cardTheme: CardThemeData(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 onGenerateRoute: _appRouter.onGenerateRoute,

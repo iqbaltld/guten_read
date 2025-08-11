@@ -7,12 +7,18 @@ import 'failures.dart';
 
 @injectable
 class ErrorHandler {
-  /// Converts DioException to appropriate AppException with detailed logging
   Exception handleDioError(DioException error) {
-    // Log the error details for debugging
-    _logError(error);
+    if (kDebugMode) {
+      print(
+        '🔴 API ERROR: ${error.requestOptions.method} ${error.requestOptions.uri}',
+      );
+      print('   Type: ${error.type}');
+      if (error.response != null) {
+        print('   Status: ${error.response!.statusCode}');
+        print('   Response: ${error.response!.data}');
+      }
+    }
 
-    // Handle response errors (4xx, 5xx)
     if (error.response != null) {
       final response = error.response!;
       final errorMessage = _extractErrorMessage(response);
@@ -23,7 +29,6 @@ class ErrorHandler {
       );
     }
 
-    // Handle connection/network errors
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
         return const NetworkException(
@@ -35,59 +40,38 @@ class ErrorHandler {
         );
       case DioExceptionType.receiveTimeout:
         return const NetworkException(
-          message: 'Server took too long to respond. Please try again.',
+          message: 'Server took too long to respond.',
         );
-      case DioExceptionType.badCertificate:
-        return const NetworkException(
-          message:
-              'Invalid SSL certificate. Please check your system time and date.',
-        );
-      case DioExceptionType.badResponse:
-        return ServerException(
-          message: 'Server responded with an error',
-          statusCode: 500,
-        );
-      case DioExceptionType.cancel:
-        return const NetworkException(message: 'Request was cancelled');
       case DioExceptionType.connectionError:
         return const NetworkException(
           message: 'Connection error. Please check your internet connection.',
         );
-      case DioExceptionType.unknown:
+      default:
         if (error.error is SocketException) {
-          return const NetworkException(
-            message:
-                'No internet connection. Please check your network settings.',
-          );
+          return const NetworkException(message: 'No internet connection.');
         }
         return ServerException(
-          message: error.message ?? 'An unexpected network error occurred',
+          message: error.message ?? 'An unexpected error occurred',
         );
     }
   }
 
-  /// Converts exceptions to appropriate failures
   Failure handleException(Exception exception, {String? context}) {
-    // Log for debugging with context
     if (kDebugMode) {
       print('🔴 ERROR${context != null ? ' [$context]' : ''}: $exception');
-      if (exception is ServerException && exception.statusCode != null) {
-        print('   Status Code: ${exception.statusCode}');
-      }
     }
 
     if (exception is ServerException) {
       return ServerFailure(exception.message);
     } else if (exception is NetworkException) {
       return NetworkFailure(exception.message);
-    } else if (exception is CacheException) {
-      return CacheFailure(exception.message);
+    } else if (exception is LLMException) {
+      return LLMFailure(exception.message);
     } else {
       return ServerFailure(exception.toString());
     }
   }
 
-  /// Extract meaningful error message from response
   String _extractErrorMessage(Response response) {
     if (response.data == null) return 'No data received from server';
 
@@ -108,23 +92,5 @@ class ErrorHandler {
     } catch (e) {
       return 'Failed to parse server response';
     }
-  }
-
-  /// Enhanced error logging for debugging
-  void _logError(DioException error) {
-    if (!kDebugMode) return;
-
-    print(
-      '🔴 API ERROR: ${error.requestOptions.method} ${error.requestOptions.uri}',
-    );
-    print('   Type: ${error.type}');
-    if (error.response != null) {
-      print('   Status: ${error.response!.statusCode}');
-      print('   Response: ${error.response!.data}');
-    }
-    if (error.requestOptions.data != null) {
-      print('   Request Data: ${error.requestOptions.data}');
-    }
-    print('   Message: ${error.message}');
   }
 }

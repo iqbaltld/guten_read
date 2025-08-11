@@ -8,15 +8,6 @@ class ServerException implements Exception {
   String toString() => 'ServerException: $message';
 }
 
-class CacheException implements Exception {
-  final String message;
-
-  const CacheException({this.message = 'Cache error'});
-
-  @override
-  String toString() => 'CacheException: $message';
-}
-
 class NetworkException implements Exception {
   final String message;
 
@@ -24,4 +15,13 @@ class NetworkException implements Exception {
 
   @override
   String toString() => 'NetworkException: $message';
+}
+
+class LLMException implements Exception {
+  final String message;
+
+  const LLMException({this.message = 'LLM processing error'});
+
+  @override
+  String toString() => 'LLMException: $message';
 }

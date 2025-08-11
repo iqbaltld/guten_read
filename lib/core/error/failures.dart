@@ -13,19 +13,10 @@ class ServerFailure extends Failure {
   const ServerFailure(super.message);
 }
 
-class CacheFailure extends Failure {
-  const CacheFailure(super.message);
+class NetworkFailure extends Failure {
+  const NetworkFailure(super.message);
 }
 
-class NetworkFailure extends Failure {
-  final int? statusCode;
-
-  const NetworkFailure(super.message, {this.statusCode});
-
-  @override
-  List<Object> get props => [message, if (statusCode != null) statusCode!];
-
-  @override
-  String toString() =>
-      'NetworkFailure: $message${statusCode != null ? ' (Status Code: $statusCode)' : ''}';
+class LLMFailure extends Failure {
+  const LLMFailure(super.message);
 }

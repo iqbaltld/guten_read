@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/app_constants.dart';
 import 'core/network/custom_interceptor.dart';
-import 'core/services/navigation_service.dart';
 import 'injection_container.config.dart';
 
 /// Global service locator instance
@@ -27,10 +26,10 @@ Future<void> setupDependencyInjection() async {
 
   // 2. Register navigation dependencies
   _registerNavigationDependencies();
-  
+
   // 3. Register network-related dependencies
   _registerNetworkDependencies();
-  
+
   // 4. Initialize generated dependencies last
   configureDependencies();
 }
@@ -57,7 +56,7 @@ void _registerNetworkDependencies() {
         'accept': 'application/json',
         'content-type': 'application/json',
       },
-      baseUrl: AppConstants.baseUrl,
+      baseUrl: ApiEndpoint.gutenbergContent,
     ),
   );
 
@@ -65,10 +64,7 @@ void _registerNetworkDependencies() {
   sl.registerLazySingleton<Dio>(() => dio);
 
   // Register and configure interceptors
-  final customInterceptor = CustomInterceptor(
-    sl<SharedPreferences>(),
-    sl<NavigationService>(),
-  );
+  final customInterceptor = CustomInterceptor();
 
   sl.registerLazySingleton<CustomInterceptor>(() => customInterceptor);
 
@@ -92,10 +88,5 @@ void _registerNavigationDependencies() {
   // Register navigation key
   sl.registerLazySingleton<GlobalKey<NavigatorState>>(
     () => GlobalKey<NavigatorState>(),
-  );
-
-  // Register navigation service with navigatorKey parameter
-  sl.registerLazySingleton<NavigationService>(
-    () => NavigationService(navigatorKey: sl<GlobalKey<NavigatorState>>()),
   );
 }

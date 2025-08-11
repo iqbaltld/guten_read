@@ -5,7 +5,6 @@ import '../error/error_handler.dart';
 import '../error/exceptions.dart';
 
 abstract class BaseDataSource {
-  /// Performs a GET request
   Future<T> get<T>(
     String path, {
     Map<String, dynamic>? queryParams,
@@ -13,7 +12,6 @@ abstract class BaseDataSource {
     T Function(dynamic data)? fromJson,
   });
 
-  /// Performs a POST request
   Future<T> post<T>(
     String path, {
     Map<String, dynamic>? queryParams,
@@ -53,14 +51,16 @@ class BaseDataSourceImpl implements BaseDataSource {
     T Function(dynamic data)? fromJson,
   }) async {
     return _makeRequest<T>(
-      () => _dio.post(path,
-          data: data, queryParameters: queryParams, options: options),
+      () => _dio.post(
+        path,
+        data: data,
+        queryParameters: queryParams,
+        options: options,
+      ),
       fromJson: fromJson,
       debugInfo: 'POST $path',
     );
   }
-
-
 
   Future<T> _makeRequest<T>(
     Future<Response> Function() request, {
@@ -68,14 +68,12 @@ class BaseDataSourceImpl implements BaseDataSource {
     required String debugInfo,
   }) async {
     try {
-      // Log request in debug mode
       if (kDebugMode) {
         print('🟡 API REQUEST: $debugInfo');
       }
 
       final response = await request();
 
-      // Log successful response in debug mode
       if (kDebugMode) {
         print('🟢 API SUCCESS: $debugInfo - Status: ${response.statusCode}');
       }
@@ -84,7 +82,6 @@ class BaseDataSourceImpl implements BaseDataSource {
     } on DioException catch (e) {
       throw _errorHandler.handleDioError(e);
     } catch (e) {
-      // Log unexpected errors
       if (kDebugMode) {
         print('🔴 UNEXPECTED ERROR in $debugInfo: $e');
       }
@@ -102,18 +99,14 @@ class BaseDataSourceImpl implements BaseDataSource {
 
     final responseData = response.data;
 
-    // Handle direct type match
     if (responseData is T) return responseData;
 
-    // Handle void operations
     if (T.toString() == 'void' || T.toString() == 'Null') return null as T;
 
-    // Use fromJson if provided
     if (fromJson != null) {
       return fromJson(responseData);
     }
 
-    // Direct cast as last resort
     return responseData as T;
   }
 }
