@@ -8,6 +8,10 @@ import '../models/analysis_model.dart';
 import '../models/character_model.dart';
 
 abstract class LLMDataSource {
+  Future<({String title, String author})> extractBookInfo({
+    required String content,
+  });
+
   Future<CharacterAnalysisModel> analyzeCharacters({
     required String bookId,
     required String bookTitle,
@@ -20,6 +24,53 @@ class LLMDataSourceImpl implements LLMDataSource {
   final BaseDataSource _baseDataSource;
 
   LLMDataSourceImpl(this._baseDataSource);
+
+  @override
+  Future<({String title, String author})> extractBookInfo({
+    required String content,
+  }) async {
+    // Use first 2000 characters for title/author extraction to save tokens
+    String analysisContent = content;
+    if (content.length > 2000) {
+      analysisContent = content.substring(0, 2000);
+    }
+
+    final prompt = _buildBookInfoPrompt(analysisContent);
+
+    final requestData = {
+      "model": AppConstants.defaultModel,
+      "messages": [
+        {
+          "role": "system",
+          "content":
+              "You are a literary expert. Extract the title and author from the given text. Return only a JSON object with 'title' and 'author' fields."
+        },
+        {"role": "user", "content": prompt}
+      ],
+      "max_tokens": 300, // Smaller token limit for title/author
+      "temperature": 0.1, // Low temperature for factual extraction
+    };
+
+    try {
+      final response = await _baseDataSource.post<Map<String, dynamic>>(
+        ApiEndpoint.groqApi,
+        data: requestData,
+        options: Options(headers: {
+          'Authorization': 'Bearer ${AppConstants.groqApiKey}',
+          'Content-Type': 'application/json',
+        }),
+        fromJson: (data) => data as Map<String, dynamic>,
+      );
+
+      final content = response['choices'][0]['message']['content'] as String;
+      final bookInfo = _parseBookInfoResponse(content);
+
+      return bookInfo;
+    } catch (e) {
+      throw LLMException(
+          message: 'Failed to extract book info: ${e.toString()}');
+    }
+  }
 
   @override
   Future<CharacterAnalysisModel> analyzeCharacters({
@@ -79,6 +130,90 @@ class LLMDataSourceImpl implements LLMDataSource {
     }
   }
 
+  // NEW METHOD: Build prompt for book info extraction
+  String _buildBookInfoPrompt(String content) {
+    return '''
+Extract the title and author from this literary text.
+Return your response in this exact JSON format:
+
+{
+  "title": "The actual title of the work",
+  "author": "The author's full name"
+}
+
+Guidelines:
+- Extract the exact title as it appears in the work
+- Use the full author name (e.g., "William Shakespeare", not just "Shakespeare")
+- If the text contains multiple works, choose the main/primary work
+- Be precise and accurate
+
+Text to analyze:
+$content
+''';
+  }
+
+  // NEW METHOD: Parse book info response
+  ({String title, String author}) _parseBookInfoResponse(String content) {
+    try {
+      // Try to extract JSON from the response
+      final jsonStart = content.indexOf('{');
+      final jsonEnd = content.lastIndexOf('}') + 1;
+
+      if (jsonStart == -1 || jsonEnd == 0) {
+        throw const LLMException(
+            message: 'No valid JSON found in book info response');
+      }
+
+      final jsonString = content.substring(jsonStart, jsonEnd);
+      final parsed = jsonDecode(jsonString) as Map<String, dynamic>;
+
+      final title = parsed['title']?.toString().trim() ?? 'Unknown Title';
+      final author = parsed['author']?.toString().trim() ?? 'Unknown Author';
+
+      return (title: title, author: author);
+    } catch (e) {
+      // Fallback parsing if JSON fails
+      return _fallbackBookInfoParsing(content);
+    }
+  }
+
+  // NEW METHOD: Fallback book info parsing
+  ({String title, String author}) _fallbackBookInfoParsing(String content) {
+    String title = 'Unknown Title';
+    String author = 'Unknown Author';
+
+    // Simple text-based extraction as fallback
+    final lines = content.split('\n');
+    for (final line in lines) {
+      final lower = line.toLowerCase().trim();
+
+      // Look for title patterns
+      if ((lower.contains('title') && lower.contains(':')) ||
+          (lower.startsWith('"') && lower.endsWith('"'))) {
+        final cleaned = line.replaceAll(RegExp(r'[^\w\s]'), '').trim();
+        if (cleaned.length > 3 && cleaned.length < 100) {
+          title = cleaned;
+        }
+      }
+
+      // Look for author patterns
+      if (lower.contains('author') && lower.contains(':')) {
+        final parts = line.split(':');
+        if (parts.length > 1) {
+          author = parts[1].trim().replaceAll(RegExp(r'[^\w\s]'), '');
+        }
+      } else if (lower.contains('by ')) {
+        final parts = line.split(RegExp(r'by\s+', caseSensitive: false));
+        if (parts.length > 1) {
+          author = parts[1].trim().replaceAll(RegExp(r'[^\w\s]'), '');
+        }
+      }
+    }
+
+    return (title: title, author: author);
+  }
+
+  // EXISTING METHOD: Your original analysis prompt
   String _buildAnalysisPrompt(String content) {
     return '''
 Analyze this literary text and identify the main characters and their relationships. 
@@ -111,6 +246,7 @@ $content
 ''';
   }
 
+  // EXISTING METHOD: Your original response parser
   Map<String, dynamic> _parseAnalysisResponse(String content) {
     try {
       // Try to extract JSON from the response
@@ -139,6 +275,7 @@ $content
     }
   }
 
+  // EXISTING METHOD: Your original fallback
   Map<String, dynamic> _createFallbackAnalysis(String content) {
     // Simple fallback analysis
     final characters = <CharacterModel>[
