@@ -34,51 +34,46 @@ import 'features/book_analyzer/presentation/cubit/book_analyzer_cubit.dart'
     as _i288;
 
 extension GetItInjectableX on _i174.GetIt {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   _i174.GetIt init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) {
-    final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
+    );
     gh.factory<_i16.ErrorHandler>(() => _i16.ErrorHandler());
     gh.factory<_i361.Interceptor>(() => _i408.CustomInterceptor());
-    gh.lazySingleton<_i294.BaseDataSource>(
-      () => _i294.BaseDataSourceImpl(gh<_i361.Dio>(), gh<_i16.ErrorHandler>()),
-    );
+    gh.lazySingleton<_i294.BaseDataSource>(() => _i294.BaseDataSourceImpl(
+          gh<_i361.Dio>(),
+          gh<_i16.ErrorHandler>(),
+        ));
     gh.factory<_i75.NetworkInfo>(
-      () => _i75.NetworkInfoImpl(gh<_i895.Connectivity>()),
-    );
-    gh.factory<_i116.BaseRepository>(
-      () => _i116.BaseRepositoryImpl(
-        networkInfo: gh<_i75.NetworkInfo>(),
-        errorHandler: gh<_i16.ErrorHandler>(),
-      ),
-    );
+        () => _i75.NetworkInfoImpl(gh<_i895.Connectivity>()));
+    gh.factory<_i116.BaseRepository>(() => _i116.BaseRepositoryImpl(
+          networkInfo: gh<_i75.NetworkInfo>(),
+          errorHandler: gh<_i16.ErrorHandler>(),
+        ));
     gh.factory<_i874.GutenbergDataSource>(
-      () => _i874.GutenbergDataSourceImpl(gh<_i294.BaseDataSource>()),
-    );
+        () => _i874.GutenbergDataSourceImpl(gh<_i294.BaseDataSource>()));
     gh.factory<_i984.LLMDataSource>(
-      () => _i984.LLMDataSourceImpl(gh<_i294.BaseDataSource>()),
-    );
+        () => _i984.LLMDataSourceImpl(gh<_i294.BaseDataSource>()));
     gh.factory<_i19.BookAnalyzerRepository>(
-      () => _i21.BookAnalyzerRepositoryImpl(
-        gh<_i874.GutenbergDataSource>(),
-        gh<_i984.LLMDataSource>(),
-        gh<_i116.BaseRepository>(),
-      ),
-    );
-    gh.factory<_i874.AnalyzeCharactersUseCase>(
-      () => _i874.AnalyzeCharactersUseCase(gh<_i19.BookAnalyzerRepository>()),
-    );
+        () => _i21.BookAnalyzerRepositoryImpl(
+              gh<_i874.GutenbergDataSource>(),
+              gh<_i984.LLMDataSource>(),
+              gh<_i116.BaseRepository>(),
+            ));
+    gh.factory<_i874.AnalyzeCharactersUseCase>(() =>
+        _i874.AnalyzeCharactersUseCase(gh<_i19.BookAnalyzerRepository>()));
     gh.factory<_i600.DownloadBookUseCase>(
-      () => _i600.DownloadBookUseCase(gh<_i19.BookAnalyzerRepository>()),
-    );
-    gh.factory<_i288.BookAnalyzerCubit>(
-      () => _i288.BookAnalyzerCubit(
-        downloadBookUseCase: gh<_i600.DownloadBookUseCase>(),
-        analyzeCharactersUseCase: gh<_i874.AnalyzeCharactersUseCase>(),
-      ),
-    );
+        () => _i600.DownloadBookUseCase(gh<_i19.BookAnalyzerRepository>()));
+    gh.factory<_i288.BookAnalyzerCubit>(() => _i288.BookAnalyzerCubit(
+          downloadBookUseCase: gh<_i600.DownloadBookUseCase>(),
+          analyzeCharactersUseCase: gh<_i874.AnalyzeCharactersUseCase>(),
+        ));
     return this;
   }
 }

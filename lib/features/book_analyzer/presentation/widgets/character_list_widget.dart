@@ -11,7 +11,7 @@ class CharacterListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -22,7 +22,7 @@ class CharacterListWidget extends StatelessWidget {
                 Text(
                   'Character Summary',
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -76,7 +76,7 @@ class CharacterListWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatItem(
-                'Total Characters',
+                'Total',
                 '${characters.length}',
                 Icons.people,
               ),
@@ -86,7 +86,7 @@ class CharacterListWidget extends StatelessWidget {
                 Icons.star,
               ),
               _buildStatItem(
-                'Total Interactions',
+                'Interactions',
                 '${_getTotalInteractions()}',
                 Icons.link,
               ),
@@ -101,7 +101,7 @@ class CharacterListWidget extends StatelessWidget {
           final index = entry.key;
           final character = entry.value;
           return _buildCharacterListItem(character, index + 1);
-        }).toList(),
+        }),
       ],
     );
   }
@@ -149,7 +149,7 @@ class CharacterListWidget extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -183,7 +183,7 @@ class CharacterListWidget extends StatelessWidget {
         title: Text(
           character.name,
           style: TextStyle(
-            fontSize: 18.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.bold,
             color: Colors.indigo[800],
           ),
@@ -198,14 +198,14 @@ class CharacterListWidget extends StatelessWidget {
             SizedBox(width: 4.w),
             Text(
               '${character.mentionCount} mentions',
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
             ),
             SizedBox(width: 16.w),
             Icon(Icons.people_outline, size: 16.sp, color: Colors.grey[600]),
             SizedBox(width: 4.w),
             Text(
               '${character.interactions.length} connections',
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
             ),
           ],
         ),

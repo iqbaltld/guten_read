@@ -38,7 +38,7 @@ class BookAnalyzerScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(12.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -103,7 +103,7 @@ class BookAnalyzerScreen extends StatelessWidget {
   Widget _buildBookInfoWidget(Book book) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -114,7 +114,7 @@ class BookAnalyzerScreen extends StatelessWidget {
                 Text(
                   'Book Downloaded',
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -153,7 +153,7 @@ class BookAnalyzerScreen extends StatelessWidget {
         // Analysis Results
         Card(
           child: Padding(
-            padding: EdgeInsets.all(24.w),
+            padding: EdgeInsets.all(16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -164,7 +164,7 @@ class BookAnalyzerScreen extends StatelessWidget {
                     Text(
                       'Character Analysis Complete',
                       style: TextStyle(
-                        fontSize: 20.sp,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -219,7 +219,7 @@ class BookAnalyzerScreen extends StatelessWidget {
                 Text(
                   'How to Use',
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue[800],
                   ),

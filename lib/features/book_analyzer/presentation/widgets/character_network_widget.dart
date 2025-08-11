@@ -15,7 +15,7 @@ class CharacterNetworkWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(12.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,7 +30,7 @@ class CharacterNetworkWidget extends StatelessWidget {
                 Text(
                   'Character Network',
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -117,7 +117,7 @@ class CharacterNetworkWidget extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12.r),
               border: Border.all(color: color, width: 2),
             ),
@@ -127,7 +127,9 @@ class CharacterNetworkWidget extends StatelessWidget {
                   backgroundColor: color,
                   radius: 20.r,
                   child: Text(
-                    character.name.isNotEmpty ? character.name[0].toUpperCase() : '?',
+                    character.name.isNotEmpty
+                        ? character.name[0].toUpperCase()
+                        : '?',
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
@@ -161,7 +163,7 @@ class CharacterNetworkWidget extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // Connections
           if (character.interactions.isNotEmpty) ...[
             SizedBox(height: 12.h),
@@ -200,7 +202,7 @@ class CharacterNetworkWidget extends StatelessWidget {
                             vertical: 4.h,
                           ),
                           decoration: BoxDecoration(
-                            color: color.withOpacity(0.2),
+                            color: color.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Text(

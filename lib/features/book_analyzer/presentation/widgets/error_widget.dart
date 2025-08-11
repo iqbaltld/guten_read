@@ -6,7 +6,7 @@ import '../../../../core/utils/error_message_mapper.dart';
 class CustomErrorWidget extends StatelessWidget {
   final String message;
   final Failure?
-  failure; // Optional: pass the original failure for more context
+      failure; // Optional: pass the original failure for more context
   final VoidCallback? onRetry;
 
   const CustomErrorWidget({
@@ -26,9 +26,8 @@ class CustomErrorWidget extends StatelessWidget {
         ? ErrorMessageMapper.getSuggestedActions(failure!)
         : <String>[];
 
-    final emoji = failure != null
-        ? ErrorMessageMapper.getErrorEmoji(failure!)
-        : '⚠️';
+    final emoji =
+        failure != null ? ErrorMessageMapper.getErrorEmoji(failure!) : '⚠️';
 
     return Card(
       color: _getErrorColor(category),
@@ -42,7 +41,7 @@ class CustomErrorWidget extends StatelessWidget {
             Text(
               'Oops! Something went wrong',
               style: TextStyle(
-                fontSize: 20.sp,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: _getErrorTextColor(category),
               ),
@@ -72,9 +71,7 @@ class CustomErrorWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8.h),
-              ...suggestions
-                  .take(3)
-                  .map(
+              ...suggestions.take(3).map(
                     (suggestion) => Padding(
                       padding: EdgeInsets.only(bottom: 4.h),
                       child: Row(
