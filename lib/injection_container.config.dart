@@ -21,13 +21,17 @@ import 'core/network/custom_interceptor.dart' as _i408;
 import 'core/network/network_info.dart' as _i75;
 import 'core/repositories/base_repository.dart' as _i64;
 import 'core/services/navigation_service.dart' as _i355;
+import 'features/category/data/datasources/category_remote_data_source.dart'
+    as _i188;
+import 'features/category/data/repositories/category_repository_impl.dart'
+    as _i44;
+import 'features/category/domain/repositories/category_repository.dart' as _i5;
+import 'features/category/presentation/cubit/category_cubit.dart' as _i478;
 import 'features/product/data/datasources/product_remote_data_source.dart'
     as _i317;
 import 'features/product/data/repositories/product_repository_impl.dart'
     as _i531;
 import 'features/product/domain/repositories/product_repository.dart' as _i841;
-import 'features/product/domain/usecases/get_products_usecase.dart' as _i330;
-import 'features/product/domain/usecases/search_products_usecase.dart' as _i874;
 import 'features/product/presentation/cubit/product_list_cubit.dart' as _i89;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -53,10 +57,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i317.ProductRemoteDataSource>(
       () => _i317.ProductRemoteDataSourceImpl(gh<_i294.BaseDataSource>()),
     );
+    gh.lazySingleton<_i188.CategoryRemoteDataSource>(
+      () => _i188.CategoryRemoteDataSourceImpl(gh<_i294.BaseDataSource>()),
+    );
     gh.factory<_i64.BaseRepository>(
       () => _i64.BaseRepositoryImpl(
         networkInfo: gh<_i75.NetworkInfo>(),
         errorHandler: gh<_i16.ErrorHandler>(),
+      ),
+    );
+    gh.lazySingleton<_i5.CategoryRepository>(
+      () => _i44.CategoryRepositoryImpl(
+        gh<_i188.CategoryRemoteDataSource>(),
+        gh<_i64.BaseRepository>(),
       ),
     );
     gh.factory<_i841.ProductRepository>(
@@ -65,16 +78,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i64.BaseRepository>(),
       ),
     );
-    gh.factory<_i874.SearchProductsUseCase>(
-      () => _i874.SearchProductsUseCase(gh<_i841.ProductRepository>()),
-    );
-    gh.factory<_i330.GetProductsUseCase>(
-      () => _i330.GetProductsUseCase(gh<_i841.ProductRepository>()),
+    gh.factory<_i478.CategoryCubit>(
+      () => _i478.CategoryCubit(gh<_i5.CategoryRepository>()),
     );
     gh.factory<_i89.ProductListCubit>(
       () => _i89.ProductListCubit(
-        getProductsUseCase: gh<_i330.GetProductsUseCase>(),
-        searchProductsUseCase: gh<_i874.SearchProductsUseCase>(),
         productRepository: gh<_i841.ProductRepository>(),
       ),
     );

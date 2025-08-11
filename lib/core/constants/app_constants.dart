@@ -1,6 +1,6 @@
 class AppConstants {
   static const String appName = 'Guten Read';
-  static const String baseUrl = 'https://www.gutenberg.org';
+  static const String baseUrl = 'https://dummyjson.com';
 }
 
 class ApiEndpoint {
