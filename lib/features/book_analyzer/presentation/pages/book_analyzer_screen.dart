@@ -27,7 +27,7 @@ class BookAnalyzerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Project Gutenberg Character Analyzer'),
+        title: const Text('Character Analyzer'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -49,7 +49,7 @@ class BookAnalyzerScreen extends StatelessWidget {
                   Icon(Icons.auto_stories, size: 64.sp, color: Colors.blue),
                   SizedBox(height: 16.h),
                   Text(
-                    'Literary Character Network Analyzer',
+                    'Character Network Analyzer',
                     style: TextStyle(
                       fontSize: 28.sp,
                       fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class BookAnalyzerScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'Enter a Project Gutenberg book ID to analyze character relationships using AI',
+                    'Enter a Project Gutenberg book ID to analyze character relationships',
                     style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
                     textAlign: TextAlign.center,
                   ),

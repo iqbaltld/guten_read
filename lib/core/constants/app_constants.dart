@@ -12,7 +12,3 @@ class ApiEndpoint {
   static const String groqApi =
       'https://api.groq.com/openai/v1/chat/completions';
 }
-
-class StorageKeys {
-  static const String apiKey = 'groq_api_key';
-}
