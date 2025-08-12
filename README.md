@@ -102,6 +102,15 @@ lib/
 4. View the character network visualization
 5. Explore detailed character relationships and interaction frequencies
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/1.png" alt="" title="" width="150"/>
+  <img src="screenshots/2.png" alt="" title="" width="150"/>
+  <img src="screenshots/3.png" alt="" title="" width="150"/>
+  <img src="screenshots/4.png" alt="" title="" width="150"/>
+</p>
+
 
 ## Author
 
