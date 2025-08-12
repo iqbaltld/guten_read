@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/app_constants.dart';
 import 'core/network/custom_interceptor.dart';
 import 'injection_container.config.dart';
@@ -34,12 +33,8 @@ Future<void> setupDependencyInjection() async {
   configureDependencies();
 }
 
-/// Registers core services like SharedPreferences and Connectivity
+/// Registers core services like Connectivity
 Future<void> _registerCoreServices() async {
-  // Initialize and register SharedPreferences
-  final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
-
   // Register Connectivity for network status
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
 }

@@ -1,7 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class AppConstants {
   static const String appName = 'Gutenberg Character Analyzer';
-  static const String groqApiKey =
-      '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';
+  static String get groqApiKey => dotenv.env['GROQ_API_KEY']!;
   static const String defaultModel = 'llama3-8b-8192';
   static const int maxTokens = 2000;
   static const int textChunkSize = 8000; // Characters to analyze at once

@@ -1,16 +1,15 @@
-# 📚 Gutenberg Character Analyzer
+# 📚 Guten Read - Book Analysis with AI
 
-A Flutter application that downloads books from Project Gutenberg and uses AI to analyze character relationships and interactions.
+A Flutter application that analyzes books from Project Gutenberg to extract and get character relationships using AI.
 
-## 🌟 Features
+## Features
 
 - **Book Download**: Fetch any public domain book from Project Gutenberg using its ID
-- **AI-Powered Analysis**: Utilizes AI to analyze character relationships and interactions
-- **Interactive Visualization**: View character networks and interaction graphs
-- **Responsive Design**: Works on both mobile and web platforms
-- **Error Handling**: Comprehensive error handling with user-friendly messages
+- **AI-Powered Analysis**: Utilizes Groq AI to analyze character relationships and interactions
+- **Interactive Visualization**: View character networks and interactions
+- **Clean Architecture**: Follows clean architecture principles for maintainability
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -21,87 +20,89 @@ A Flutter application that downloads books from Project Gutenberg and uses AI to
 ### Installation
 
 1. Clone the repository:
-
    ```bash
-   git clone https://github.com/yourusername/guten_read.git
+   git clone https://github.com/iqbaltld/guten_read.git
    cd guten_read
    ```
 
 2. Install dependencies:
-
    ```bash
    flutter pub get
    ```
 
-3. Configure your Groq API key:
-
-   - Open `lib/core/constants/app_constants.dart`
-   - Set your Groq API key: `static const String groqApiKey = 'YOUR_GROQ_API_KEY';`
+3. Set up environment variables:
+   - Create a `.env` file in the root directory
+   - Add your Groq API key:
+     ```
+     GROQ_API_KEY=your_groq_api_key_here
+     ```
+   - **Important**: The `.env` file is in `.gitignore` for security. Never commit your API key to version control.
 
 4. Run the app:
    ```bash
-   flutter run -d chrome  # For web
-   # or
-   flutter run           # For connected device/emulator
+   flutter run
    ```
 
-## 🏗 Project Structure
+## Project Structure
 
 ```
 lib/
 ├── core/
 │   ├── constants/     # App-wide constants
-│   ├── error/         # Error handling and exceptions
-│   ├── network/       # Network layer (API clients, interceptors)
-│   ├── routes/        # App routing
-│   └── utils/         # Utility functions and helpers
+│   ├── network/       # Network layer (Api Manager, interceptors, error handling)
+│   ├── routes/        # App routing configuration
+│   └── utils/         # Utility functions
 │
 ├── features/
-│   └── book_analyzer/ # Book analysis feature
+│   └── book_analyzer/ # Book analysis feature module
 │       ├── data/      # Data layer
-│       │   ├── datasources/  # Data sources (API, local)
-│       │   ├── models/       # Data models
+│       │   ├── datasources/  # Remote data sources
+│       │   ├── models/      # Data transfer objects (DTOs)
 │       │   └── repositories/ # Repository implementations
+│       │
 │       ├── domain/    # Domain layer
-│       │   ├── entities/    # Business objects
-│       │   ├── repositories/# Repository interfaces
-│       │   └── usecases/    # Business logic
-│       └── presentation/    # UI layer
-│           ├── cubit/       # State management
-│           └── screens/     # UI screens
+│       │   ├── entities/    # Core business objects
+│       │   ├── repositories/ # Abstract repository contracts
+│       │   └── usecases/    # Application-specific business rules
+│       │
+│       └── presentation/     # UI layer
+│           ├── cubit/       # State management logic
+│           ├── pages/       # Application screens
+│           └── widgets/     # Reusable UI components
 │
-└── injection_container.dart # Dependency injection setup
+├── injection_container.dart  # Dependency injection setup
+└── main.dart                # Application entry point
 ```
 
-## 🛠 Dependencies
+## Dependencies
 
-- **State Management**: `flutter_bloc`
-- **Dependency Injection**: `get_it`, `injectable`
-- **Networking**: `dio`
-- **Functional Programming**: `dartz`
-- **UI**: `flutter_screenutil`
-- **AI Integration**: Groq API
+- **State Management**: `flutter_bloc` with `equatable`
+- **Dependency Injection**: `get_it` with `injectable`
+- **Networking**: `dio` for HTTP requests
+- **UI**: `flutter_screenutil` for responsive design
+- **Utilities**: 
+  - `dartz` for functional programming
+  - `intl` for internationalization
+  - `url_launcher` for opening external links
+  - `connectivity_plus` for network status
+  - `flutter_dotenv` for environment variables
 
-## 🤖 How It Works
+## How It Works
 
 1. **Book Download**: The app fetches the full text of a book from Project Gutenberg using the provided book ID.
-2. **Text Processing**: The book content is processed to prepare for analysis.
-3. **AI Analysis**: The text is sent to the Groq AI service which analyzes character relationships.
-4. **Visualization**: The results are displayed as an interactive character network graph and detailed character list.
+2. **Text Processing**: The book content is cleaned and prepared for analysis.
+3. **AI Analysis**: The text is sent to the Groq AI service to analyze character relationships and interactions.
+4. **Visualization**: Results are presented through a detailed character list.
 
-## 📝 Usage
+## Usage
 
-1. Enter a Project Gutenberg book ID (e.g., `1342` for _Pride and Prejudice_)
-2. Tap "Analyze" to download and process the book
-3. View the character network and interaction details
-4. Explore character relationships and interaction frequencies
+1. Launch the application
+2. Enter a valid Project Gutenberg book ID (e.g., `1513`)
+3. Tap "Analyze" to begin the download and analysis process
+4. View the character network visualization
+5. Explore detailed character relationships and interaction frequencies
 
-## 📱 Screenshots
 
-_Screenshots will be added here_
+## Author
 
-## 🙏 Acknowledgments
-
-- Project Gutenberg for providing free public domain books
-- Groq for AI inference capabilities
-- Flutter for the amazing cross-platform framework
+**Muhammed Iqbal** – [LinkedIn](https://linkedin.com/in/iqbaltld)  
