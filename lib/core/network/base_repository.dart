@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import '../error/error_handler.dart';
-import '../error/exceptions.dart';
-import '../error/failures.dart';
+import 'error/error_handler.dart';
+import 'error/exceptions.dart';
+import 'error/failures.dart';
 import 'network_info.dart';
 
 abstract class BaseRepository {

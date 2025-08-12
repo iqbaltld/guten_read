@@ -1,4 +1,4 @@
-import 'package:guten_read/core/error/failures.dart';
+import 'package:guten_read/core/network/error/failures.dart';
 
 class ErrorMessageMapper {
   /// Maps technical failures to user-friendly messages

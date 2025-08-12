@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/network/base_data_source.dart';
+import '../../../../core/network/error/exceptions.dart';
+import '../../../../core/network/api_manager.dart';
 import '../models/analysis_model.dart';
 import '../models/character_model.dart';
 
@@ -21,9 +21,9 @@ abstract class LLMDataSource {
 
 @Injectable(as: LLMDataSource)
 class LLMDataSourceImpl implements LLMDataSource {
-  final BaseDataSource _baseDataSource;
+  final ApiManager _apiManager;
 
-  LLMDataSourceImpl(this._baseDataSource);
+  LLMDataSourceImpl(this._apiManager);
 
   @override
   Future<({String title, String author})> extractBookInfo({
@@ -52,7 +52,7 @@ class LLMDataSourceImpl implements LLMDataSource {
     };
 
     try {
-      final response = await _baseDataSource.post<Map<String, dynamic>>(
+      final response = await _apiManager.post<Map<String, dynamic>>(
         ApiEndpoint.groqApi,
         data: requestData,
         options: Options(headers: {
@@ -101,7 +101,7 @@ class LLMDataSourceImpl implements LLMDataSource {
     };
 
     try {
-      final response = await _baseDataSource.post<Map<String, dynamic>>(
+      final response = await _apiManager.post<Map<String, dynamic>>(
         ApiEndpoint.groqApi,
         data: requestData,
         options: Options(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/error/failures.dart';
+import '../../../../core/network/error/failures.dart';
 import '../../../../core/utils/error_message_mapper.dart';
 
 class CustomErrorWidget extends StatelessWidget {

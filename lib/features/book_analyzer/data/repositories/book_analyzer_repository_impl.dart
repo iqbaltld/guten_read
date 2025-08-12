@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:guten_read/features/book_analyzer/data/models/book_model.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../core/error/failures.dart';
+import '../../../../core/network/error/failures.dart';
 import '../../../../core/network/base_repository.dart';
 import '../../domain/entities/book.dart';
 import '../../domain/entities/character_analysis.dart';

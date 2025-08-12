@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../core/error/failures.dart';
+import '../../../../core/network/error/failures.dart';
 import '../entities/character_analysis.dart';
 import '../repositories/book_analyzer_repository.dart';
 

@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import '../error/error_handler.dart';
-import '../error/exceptions.dart';
+import 'error/error_handler.dart';
+import 'error/exceptions.dart';
 
-abstract class BaseDataSource {
+abstract class ApiManager {
   Future<T> get<T>(
     String path, {
     Map<String, dynamic>? queryParams,
@@ -21,12 +21,12 @@ abstract class BaseDataSource {
   });
 }
 
-@LazySingleton(as: BaseDataSource)
-class BaseDataSourceImpl implements BaseDataSource {
+@LazySingleton(as: ApiManager)
+class ApiManagerImpl implements ApiManager {
   final Dio _dio;
   final ErrorHandler _errorHandler;
 
-  BaseDataSourceImpl(this._dio, this._errorHandler);
+  ApiManagerImpl(this._dio, this._errorHandler);
 
   @override
   Future<T> get<T>(
